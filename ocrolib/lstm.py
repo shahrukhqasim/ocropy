@@ -30,8 +30,10 @@ import common as ocrolib
 from numpy import (amax, amin, argmax, arange, array, clip, concatenate, dot,
                    exp, isnan, log, maximum, mean, nan, ones, outer, roll, sum,
                    tanh, tile, vstack, zeros)
-from pylab import (clf, cm, figure, ginput, imshow, newaxis, rand, subplot,
-                   where)
+from numpy import newaxis
+from numpy import random
+# from pylab import (clf, cm, figure, ginput, imshow, newaxis, rand, subplot,
+#                    where)
 from collections import defaultdict
 from ocrolib.exceptions import RecognitionError
 from ocrolib.edist import levenshtein
@@ -62,7 +64,7 @@ def randu(*shape):
     resulting in a different distribution for weight initializations.
     Empirically, the choice of randu/randn can make a difference
     for neural network initialization."""
-    return 2*rand(*shape)-1
+    return 2*random.rand(*shape)-1
 
 def sigmoid(x):
     """Compute the sigmoid function.
@@ -343,8 +345,8 @@ class MLP(Network):
         self.Ni = Ni
         self.Nh = Nh
         self.No = No
-        self.W1 = rand(Nh,Ni+1)*initial_range
-        self.W2 = rand(No,Nh+1)*initial_range
+        self.W1 = random.rand(Nh,Ni+1)*initial_range
+        self.W2 = random.rand(No,Nh+1)*initial_range
     def ninputs(self):
         return self.Ni
     def noutputs(self):
@@ -816,10 +818,10 @@ def ctc_align_targets(outputs,targets,threshold=100.0,verbose=0,debug=0,lo=1e-5)
     match = dot(outputs,targets.T)
     lmatch = log(match)
 
-    if debug:
-        figure("ctcalign"); clf();
-        subplot(411); imshow(outputs.T,interpolation='nearest',cmap=cm.hot)
-        subplot(412); imshow(lmatch.T,interpolation='nearest',cmap=cm.hot)
+    # if debug:
+    #     figure("ctcalign"); clf();
+    #     subplot(411); imshow(outputs.T,interpolation='nearest',cmap=cm.hot)
+    #     subplot(412); imshow(lmatch.T,interpolation='nearest',cmap=cm.hot)
     assert not isnan(lmatch).any()
 
     # Now, we compute a forward-backward algorithm over the matches between
@@ -842,10 +844,10 @@ def ctc_align_targets(outputs,targets,threshold=100.0,verbose=0,debug=0,lo=1e-5)
     l = sum(aligned,axis=1)[:,newaxis]
     aligned /= where(l==0.0,1e-9,l)
 
-    if debug:
-        subplot(413); imshow(epath.T,cmap=cm.hot,interpolation='nearest')
-        subplot(414); imshow(aligned.T,cmap=cm.hot,interpolation='nearest')
-        ginput(1,0.01);
+    # if debug:
+    #     subplot(413); imshow(epath.T,cmap=cm.hot,interpolation='nearest')
+    #     subplot(414); imshow(aligned.T,cmap=cm.hot,interpolation='nearest')
+    #     ginput(1,0.01);
     return aligned
 
 def normalize_nfkc(s):
