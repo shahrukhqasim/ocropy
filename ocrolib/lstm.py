@@ -257,7 +257,7 @@ class Network:
 class Logreg(Network):
     """A logistic regression layer, a straightforward implementation
     of the logistic regression equations. Uses 1-augmented vectors."""
-    def __init__(self,Nh,No,initial_range=initial_range,rand=rand):
+    def __init__(self,Nh,No,initial_range=initial_range,rand=random.rand):
         self.Nh = Nh
         self.No = No
         self.W2 = randu(No,Nh+1)*initial_range
@@ -296,7 +296,7 @@ class Logreg(Network):
 class Softmax(Network):
     """A softmax layer, a straightforward implementation
     of the softmax equations. Uses 1-augmented vectors."""
-    def __init__(self,Nh,No,initial_range=initial_range,rand=rand):
+    def __init__(self,Nh,No,initial_range=initial_range,rand=random.rand):
         self.Nh = Nh
         self.No = No
         self.W2 = randu(No,Nh+1)*initial_range
