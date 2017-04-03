@@ -5,8 +5,10 @@ import os
 import re
 from scipy import stats
 from scipy.ndimage import measurements,interpolation,filters
-from pylab import *
+# from pylab import *
 from toplevel import *
+from numpy import argmax, arange, mean, array, newaxis, ones,vstack,dtype,eye
+
 
 def scale_to_h(img,target_height,order=1,dtype=dtype('f'),cval=0):
     h,w = img.shape
@@ -37,11 +39,6 @@ class CenterNormalizer:
         deltas = abs(arange(h)[:,newaxis]-self.center[newaxis,:])
         self.mad = mean(deltas[line!=0])
         self.r = int(1+self.range*self.mad)
-        if self.debug:
-            figure("center")
-            imshow(line,cmap=cm.gray)
-            plot(self.center)
-            ginput(1,1000)
     def dewarp(self,img,cval=0,dtype=dtype('f')):
         assert img.shape==self.shape
         h,w = img.shape

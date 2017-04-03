@@ -1,5 +1,5 @@
 from scipy.ndimage import filters
-from pylab import *
+from numpy import empty, arange, ones, array
 import re
 
 def levenshtein(a,b):

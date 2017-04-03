@@ -1,9 +1,11 @@
 from __future__ import print_function
 
 from toplevel import *
-from pylab import *
+# from pylab import *
 from scipy.ndimage import filters,interpolation
 import sl,morph
+from numpy import *
+import cv2
 
 def B(a):
     if a.dtype==dtype('B'): return a
@@ -137,8 +139,6 @@ def reading_order(lines,highlight=None,debug=0):
         if w[0].stop<min(u[0].start,v[0].start): return 0
         if w[0].start>max(u[0].stop,v[0].stop): return 0
         if w[1].start<u[1].stop and w[1].stop>v[1].start: return 1
-    if highlight is not None:
-        clf(); title("highlight"); imshow(binary); ginput(1,debug)
     for i,u in enumerate(lines):
         for j,v in enumerate(lines):
             if x_overlaps(u,v):
@@ -151,10 +151,6 @@ def reading_order(lines,highlight=None,debug=0):
                 print((i, j), end=' ')
                 y0,x0 = sl.center(lines[i])
                 y1,x1 = sl.center(lines[j])
-                plot([x0,x1+200],[y0,y1])
-    if highlight is not None:
-        print()
-        ginput(1,debug)
     return order
 
 def topsort(order):
@@ -175,32 +171,33 @@ def topsort(order):
     return L #[::-1]
 
 def show_lines(image,lines,lsort):
+    pass
     """Overlays the computed lines on top of the image, for debugging
     purposes."""
-    ys,xs = [],[]
-    clf(); cla()
-    imshow(image)
-    for i in range(len(lines)):
-        l = lines[lsort[i]]
-        y,x = sl.center(l.bounds)
-        xs.append(x)
-        ys.append(y)
-        o = l.bounds
-        r = matplotlib.patches.Rectangle((o[1].start,o[0].start),edgecolor='r',fill=0,width=sl.dim1(o),height=sl.dim0(o))
-        gca().add_patch(r)
-    h,w = image.shape
-    ylim(h,0); xlim(0,w)
-    plot(xs,ys)
+    # ys,xs = [],[]
+    # clf(); cla()
+    # imshow(image)
+    # for i in range(len(lines)):
+    #     l = lines[lsort[i]]
+    #     y,x = sl.center(l.bounds)
+    #     xs.append(x)
+    #     ys.append(y)
+    #     o = l.bounds
+    #     r = matplotlib.patches.Rectangle((o[1].start,o[0].start),edgecolor='r',fill=0,width=sl.dim1(o),height=sl.dim0(o))
+    #     gca().add_patch(r)
+    # h,w = image.shape
+    # ylim(h,0); xlim(0,w)
+    # plot(xs,ys)
 
 @obsolete
 def read_gray(fname):
-    image = imread(fname)
+    image = cv2.imread(fname)
     if image.ndim==3: image = mean(image,2)
     return image
 
 @obsolete
 def read_binary(fname):
-    image = imread(fname)
+    image = cv2.imread(fname)
     if image.ndim==3: image = mean(image,2)
     image -= amin(image)
     image /= amax(image)

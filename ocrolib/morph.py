@@ -5,8 +5,8 @@
 from __future__ import print_function
 
 from numpy import *
-import pylab
-from pylab import *
+# import pylab
+# from pylab import *
 from scipy.ndimage import morphology,measurements,filters
 from scipy.ndimage.morphology import *
 from toplevel import *
@@ -121,7 +121,9 @@ def rg_closing(image,size,origin=0):
 
 @checks(SEGMENTATION)
 def showlabels(x,n=7):
-    pylab.imshow(where(x>0,x%n+1,0),cmap=pylab.cm.gist_stern)
+    pass
+    # pylab.imshow(where(x>0,x%n+1,0),cmap=pylab.cm.gist_stern)
+
 
 @checks(SEGMENTATION)
 def spread_labels(labels,maxdist=9999999):
